@@ -45,7 +45,6 @@ class AssetDetailController extends Controller
             Alert::success('Sukses', 'Asset berhasil disimpan');
             return redirect()->route('asset.detail', $validated['asset_id']);
         } catch (\Exception $e) {
-            dd($e);
             Alert::error('Error', 'Gagal menyimpan asset');
             return redirect()->back();
         }

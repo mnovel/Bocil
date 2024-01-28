@@ -16,7 +16,7 @@
                             <div class="form-group">
                                 <label for="" class="form-label">Panjang</label>
                                 <input type="text" class="form-control" name="panjang" id="panjang"
-                                    value="{{ ucwords($data['assetDetail']->panjang) }}">
+                                    value="{{ $data['assetDetail']->panjang }}">
                                 @error('panjang')
                                     <small class="text-danger font-italic font-weight-bold">{{ $message }}</small>
                                 @enderror
@@ -24,7 +24,7 @@
                             <div class="form-group">
                                 <label for="" class="form-label">Lebar</label>
                                 <input type="text" class="form-control" name="lebar" id="lebar"
-                                    value="{{ ucwords($data['assetDetail']->lebar) }}">
+                                    value="{{ $data['assetDetail']->lebar }}">
                                 @error('lebar')
                                     <small class="text-danger font-italic font-weight-bold">{{ $message }}</small>
                                 @enderror
@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label for="" class="form-label">Jumlah Asset</label>
                                 <input type="text" class="form-control" name="jumlah_asset" id="jumlah_asset"
-                                    value="{{ ucwords($data['assetDetail']->jumlah_asset) }}">
+                                    value="{{ $data['assetDetail']->jumlah_asset }}">
                                 @error('jumlah_asset')
                                     <small class="text-danger font-italic font-weight-bold">{{ $message }}</small>
                                 @enderror
@@ -40,8 +40,9 @@
                             <input type="hidden" name="asset_id" id="asset_id"
                                 value="{{ $data['assetDetail']->asset_id }}">
                             <button class="btn btn-info col-lg-2 col-3">Edit</button>
-                            <button onclick="window.location.href='{{ route('asset.index') }}'" class="btn btn-secondary"
-                                type="button">Batal</button>
+                            <button
+                                onclick="window.location.href='{{ route('asset.detail', $data['assetDetail']->asset_id) }}'"
+                                class="btn btn-secondary" type="button">Batal</button>
                         </form>
                     </div>
                     <!-- /.card-body -->

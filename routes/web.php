@@ -6,6 +6,8 @@ use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JenisController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenanggungJawabController;
+use App\Http\Controllers\SewaController;
+use App\Http\Controllers\SewaDetailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +48,22 @@ Route::prefix("asset-detail")->as('asset-detail.')->group(function () {
     Route::post("/store", [AssetDetailController::class, 'store'])->name('store');
     Route::put("/update/{assetDetail}", [AssetDetailController::class, 'update'])->name('update');
     Route::delete("/delete/{assetDetail}", [AssetDetailController::class, 'destroy'])->name('delete');
+});
+
+Route::prefix("sewa")->as('sewa.')->group(function () {
+    Route::get("/", [SewaController::class, 'index'])->name('index');
+    Route::get("/detail/{sewa}", [SewaController::class, 'show'])->name('detail');
+    Route::get("/edit/{sewa}", [SewaController::class, 'edit'])->name('edit');
+    Route::post("/store", [SewaController::class, 'store'])->name('store');
+    Route::put("/update/{sewa}", [SewaController::class, 'update'])->name('update');
+    Route::delete("/delete/{sewa}", [SewaController::class, 'destroy'])->name('delete');
+});
+
+Route::prefix("sewa-detail")->as('sewa-detail.')->group(function () {
+    Route::get("/edit/{sewaDetail}", [SewaDetailController::class, 'edit'])->name('edit');
+    Route::post("/store", [SewaDetailController::class, 'store'])->name('store');
+    Route::put("/update/{sewaDetail}", [SewaDetailController::class, 'update'])->name('update');
+    Route::delete("/delete/{sewaDetail}", [SewaDetailController::class, 'destroy'])->name('delete');
 });
 
 Route::prefix("jabatan")->as('jabatan.')->group(function () {

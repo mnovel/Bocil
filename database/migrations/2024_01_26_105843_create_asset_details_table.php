@@ -24,11 +24,10 @@ return new class extends Migration
             $table->integer('jumlah_tersedia')->storedAs('jumlah_asset - jumlah_digunakan');
             $table->timestamps();
 
-
             $table->foreign("asset_id")
                 ->references("id")
                 ->on("assets")
-                ->onDelete("restrict");
+                ->onDelete("cascade");
         });
     }
 

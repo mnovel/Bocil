@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AssetDetail extends Model
@@ -15,5 +14,10 @@ class AssetDetail extends Model
     public function asset()
     {
         return $this->belongsTo(Assets::class);
+    }
+
+    public function sewaDetail()
+    {
+        return $this->hasMany(SewaDetail::class, 'asset_detail_id', 'id');
     }
 }

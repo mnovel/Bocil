@@ -17,5 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PenanggungJawabSeeder::class);
         $this->call(KategoriSeeder::class);
         $this->call(JenisSeeder::class);
+        $this->call(AssetsSeeder::class);
+        $this->call(AssetDetailSeeder::class);
+        $this->call(SewaSeeder::class);
     }
 }

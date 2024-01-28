@@ -57,7 +57,7 @@
                             @foreach ($data['kategori'] as $index => $resKategori)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ ucwords($resKategori->nama) }}</td>
+                                    <td>{{ $resKategori->nama }}</td>
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm">
                                             <button

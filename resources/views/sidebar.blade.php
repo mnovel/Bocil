@@ -23,9 +23,9 @@
             </p>
         </a>
     </li>
-    <li class="nav-item">
-        <a href="../gallery.html" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
+    <li class="nav-item {{ Route::is('sewa.*') ? 'active' : '' }}">
+        <a href="{{ route('sewa.index') }}" class="nav-link {{ Route::is('sewa.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-building"></i>
             <p>
                 Sewa
             </p>

@@ -63,29 +63,29 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header bg-info">
-                    <h3 class="card-title">Asset {{ ucwords($data['asset']->nama) }}</h3>
+                    <h3 class="card-title">Asset {{ $data['asset']->nama }}</h3>
                 </div>
                 <div class="card-body">
                     <table>
                         <tr>
                             <th class="col-1">Nama</th>
                             <td>:</td>
-                            <td>{{ ucwords($data['asset']->nama) }}</td>
+                            <td>{{ $data['asset']->nama }}</td>
                         </tr>
                         <tr>
                             <th class="col-1">Lokasi</th>
                             <td>:</td>
-                            <td>{{ ucwords($data['asset']->lokasi) }}</td>
+                            <td>{{ $data['asset']->lokasi }}</td>
                         </tr>
                         <tr>
                             <th class="col-1">Jenis</th>
                             <td>:</td>
-                            <td>{{ ucwords($data['asset']->jenis->nama) }}</td>
+                            <td>{{ $data['asset']->jenis->nama }}</td>
                         </tr>
                         <tr>
                             <th class="col-1">Tarif</th>
                             <td>:</td>
-                            <td>{{ ucwords($data['asset']->jenis->tarif) }}</td>
+                            <td>{{ $data['asset']->jenis->tarif }}</td>
                         </tr>
                     </table>
                 </div>
@@ -114,7 +114,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data['asset']->assetDetails as $index => $resAssetDetail)
+                            @foreach ($data['asset']->assetDetail as $index => $resAssetDetail)
                                 <tr class="text-center">
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $resAssetDetail->panjang }}</td>

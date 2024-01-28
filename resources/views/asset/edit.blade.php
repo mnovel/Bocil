@@ -16,14 +16,14 @@
                             <div class="form-group">
                                 <label for="" class="form-label">Nama</label>
                                 <input type="text" class="form-control" name="nama" id="nama"
-                                    value="{{ ucwords($data['asset']->nama) }}">
+                                    value="{{ $data['asset']->nama }}">
                                 @error('nama')
                                     <small class="text-danger font-italic font-weight-bold">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label for="" class="form-label">Lokasi</label>
-                                <textarea type="text" class="form-control" name="lokasi" id="lokasi">{{ ucwords($data['asset']->lokasi) }}</textarea>
+                                <textarea type="text" class="form-control" name="lokasi" id="lokasi">{{ $data['asset']->lokasi }}</textarea>
                                 @error('lokasi')
                                     <small class="text-danger font-italic font-weight-bold">{{ $message }}</small>
                                 @enderror
@@ -86,20 +86,30 @@
             });
         }
 
+        function fetchJenisOptions(kategoriId, selectedJenisId) {
+            var url = "{{ route('api.jenisByKategori', 'kategori_id') }}"
+            $.ajax({
+                url: url.replace('kategori_id', kategoriId),
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    updateSelect2(data, selectedJenisId);
+                },
+                error: function(error) {
+                    console.error('Error fetching jenis data:', error);
+                }
+            });
+        }
+
         var kategori = $('#kategori').val();
-        var filteredJenis = @json($data['jenis']).filter(function(resJenis) {
-            return resJenis.kategori_id == kategori;
-        });
         var selectedJenisId = {{ $data['asset']->jenis_id }};
-        updateSelect2(filteredJenis, selectedJenisId);
+        fetchJenisOptions(kategori, selectedJenisId);
 
         $('#kategori').change(function(e) {
             var kategori = $(this).val();
-            var filteredJenis = @json($data['jenis']).filter(function(resJenis) {
-                return resJenis.kategori_id == kategori;
-            });
-
-            updateSelect2(filteredJenis);
+            fetchJenisOptions(kategori);
         });
     </script>
 @endpush

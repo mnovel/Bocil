@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Assets extends Model
@@ -14,10 +13,15 @@ class Assets extends Model
 
     public function jenis()
     {
-        return $this->belongsTo(Jenis::class);
+        return $this->belongsTo(Jenis::class, 'jenis_id', 'id');
     }
 
-    public function assetDetails()
+    public function sewa()
+    {
+        return $this->hasMany(Sewa::class, 'asset_id', 'id');
+    }
+
+    public function assetDetail()
     {
         return $this->hasMany(AssetDetail::class, 'asset_id', 'id');
     }

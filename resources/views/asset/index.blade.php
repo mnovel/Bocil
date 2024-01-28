@@ -89,8 +89,8 @@
                             @foreach ($data['asset'] as $index => $resAsset)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ ucwords($resAsset->nama) }}</td>
-                                    <td>{{ ucwords($resAsset->lokasi) }}</td>
+                                    <td>{{ $resAsset->nama }}</td>
+                                    <td>{{ $resAsset->lokasi }}</td>
                                     <td class="text-center">
                                         <h5><span class="badge badge-info">{{ $resAsset->jenis->kategori->nama }}</span>
                                         </h5>
@@ -156,25 +156,33 @@
 
         $('#kategori').change(function(e) {
             var kategori = $(this).val();
-            var select2Data = [];
+            var url = "{{ route('api.jenisByKategori', 'kategori_id') }}"
 
-            var filteredJenis = @json($data['jenis']).filter(function(resJenis) {
-                return resJenis.kategori_id == kategori;
-            });
+            $.ajax({
+                url: url.replace('kategori_id', kategori),
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    var select2Data = data.map(function(resJenis) {
+                        return {
+                            id: resJenis.id,
+                            text: resJenis.nama
+                        };
+                    });
 
-            select2Data = filteredJenis.map(function(resJenis) {
-                return {
-                    id: resJenis.id,
-                    text: resJenis.nama
-                };
-            });
+                    $('#jenis option[value="0"]').remove();
+                    $('#kategori option[value="0"]').remove();
 
-            $('#jenis option[value="0"]').remove();
-            $('#kategori option[value="0"]').remove();
-
-            $('.select2').empty().select2({
-                theme: 'bootstrap4',
-                data: select2Data
+                    $('.select2').empty().select2({
+                        theme: 'bootstrap4',
+                        data: select2Data
+                    });
+                },
+                error: function(error) {
+                    console.error('Error fetching jenis data:', error);
+                }
             });
         });
 
