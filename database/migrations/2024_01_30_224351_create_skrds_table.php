@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sewa_details', function (Blueprint $table) {
+        Schema::create('skrds', function (Blueprint $table) {
             $table->id();
             $table->uuid('kode_transaksi');
-            $table->unsignedBigInteger('asset_detail_id');
-            $table->integer('jumlah');
-            $table->integer('tarif');
-            $table->integer('harga');
+            $table->unsignedBigInteger('penanggung_jawab_id');
+            $table->integer('denda')->nullable();
+            $table->integer('pengurangan')->nullable();
+            $table->string('terbilang');
+            $table->date('tanggal_cetak');
             $table->timestamps();
 
             $table->foreign('kode_transaksi')
@@ -25,10 +26,10 @@ return new class extends Migration
                 ->on('sewas')
                 ->onDelete('cascade');
 
-            $table->foreign('asset_detail_id')
+            $table->foreign('penanggung_jawab_id')
                 ->references('id')
-                ->on('asset_details')
-                ->onDelete('restrict');
+                ->on('penanggung_jawabs')
+                ->onDelete('cascade');
         });
     }
 
@@ -37,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sewa_details');
+        Schema::dropIfExists('skrds');
     }
 };

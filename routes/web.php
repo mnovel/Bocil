@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenanggungJawabController;
 use App\Http\Controllers\SewaController;
 use App\Http\Controllers\SewaDetailController;
+use App\Http\Controllers\SkrdController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,6 +67,14 @@ Route::prefix("sewa-detail")->as('sewa-detail.')->group(function () {
     Route::delete("/delete/{sewaDetail}", [SewaDetailController::class, 'destroy'])->name('delete');
 });
 
+Route::prefix("skrd")->as('skrd.')->group(function () {
+    Route::get("/{status}", [SkrdController::class, 'index'])->name('index')->where([
+        'status' => '(belum\-terbit|terbit|selesai)'
+    ]);
+    Route::get("/store/{penanggungJawab}/{sewa}", [SkrdController::class, 'store'])->name('store');
+    Route::put("/update/{skrd}", [SkrdController::class, 'update'])->name('update');
+});
+
 Route::prefix("jabatan")->as('jabatan.')->group(function () {
     Route::get("/", [JabatanController::class, 'index'])->name('index');
     Route::get("/edit/{jabatan}", [JabatanController::class, 'edit'])->name('edit');
@@ -89,3 +98,7 @@ Route::prefix("jenis")->as('jenis.')->group(function () {
     Route::put("/update/{jenis}", [JenisController::class, 'update'])->name('update');
     Route::delete("/delete/{jenis}", [JenisController::class, 'destroy'])->name('delete');
 });
+
+// Route::get('skrd', function () {
+//     return view('template.skrd');
+// });

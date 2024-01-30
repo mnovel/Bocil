@@ -13,7 +13,7 @@ class AssetDetail extends Model
 
     public function asset()
     {
-        return $this->belongsTo(Assets::class);
+        return $this->belongsTo(Assets::class, 'asset_id', 'id');
     }
 
     public function sewaDetail()

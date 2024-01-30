@@ -15,4 +15,9 @@ class penanggungJawab extends Model
     {
         return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
     }
+
+    public function skrd()
+    {
+        return $this->hasMany(Skrd::class, 'penanggung_jawab_id', 'id');
+    }
 }

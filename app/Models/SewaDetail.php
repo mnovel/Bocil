@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SewaDetail extends Model
 {
     protected $fillable = [
-        'kode_transaksi', 'asset_detail_id', 'jumlah'
+        'kode_transaksi', 'asset_detail_id', 'jumlah', 'tarif', 'harga'
     ];
 
     protected static function boot()

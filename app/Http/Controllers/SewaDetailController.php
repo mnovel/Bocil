@@ -7,6 +7,8 @@ use App\Models\SewaDetail;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Http\Requests\StoreSewaDetailRequest;
 use App\Http\Requests\UpdateSewaDetailRequest;
+use App\Models\AssetDetail;
+use App\Models\Sewa;
 
 class SewaDetailController extends Controller
 {
@@ -34,7 +36,10 @@ class SewaDetailController extends Controller
         try {
             $validated = $request->validated();
 
+
             $validated['asset_detail_id'] = $validated['asset'];
+            $validated['tarif'] = AssetDetail::with(['asset', 'asset.jenis'])->where('id', $validated['asset'])->first()->asset->jenis->tarif;
+            $validated['harga'] = AssetDetail::where('id', $validated['asset'])->first()->tarif * $validated['jumlah'] * Sewa::where('kode_transaksi', $validated['kode_transaksi'])->first()->lama_sewa;
             unset($validated['asset']);
 
             SewaDetail::create($validated);
@@ -42,6 +47,7 @@ class SewaDetailController extends Controller
             Alert::success('Sukses', 'Asset berhasil disimpan');
             return redirect()->route('sewa.detail', $validated['kode_transaksi']);
         } catch (\Exception $e) {
+            dd($e);
             Alert::error('Error', 'Gagal menyimpan asset');
             return redirect()->back();
         }

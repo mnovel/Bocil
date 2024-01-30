@@ -25,19 +25,47 @@
     </li>
     <li class="nav-item {{ Route::is('sewa.*') ? 'active' : '' }}">
         <a href="{{ route('sewa.index') }}" class="nav-link {{ Route::is('sewa.*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa-building"></i>
+            <i class="nav-icon fas fa-handshake"></i>
             <p>
                 Sewa
             </p>
         </a>
     </li>
-    <li class="nav-item">
-        <a href="../gallery.html" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
+    <li class="nav-item {{ preg_match('/(skrd)/i',request()->route()->getName())? 'menu-open': '' }}">
+        <a href="#" class="nav-link {{ preg_match('/(skrd)/i',request()->route()->getName())? 'active': '' }}">
+            <i class="nav-icon fas fa-file-invoice"></i>
             <p>
-                SKD
+                SKRD
+                <i class="right fas fa-angle-left"></i>
             </p>
         </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('skrd.index', 'belum-terbit') }}"
+                    class="nav-link {{ Route::is('skrd.index') && request('status') === 'belum-terbit' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Belum Terbit</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('skrd.index', 'terbit') }}"
+                    class="nav-link {{ Route::is('skrd.index') && request('status') === 'terbit' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Terbit</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('skrd.index', 'selesai') }}"
+                    class="nav-link {{ Route::is('skrd.index') && request('status') === 'selesai' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Selesai</p>
+                </a>
+            </li>
+        </ul>
     </li>
     <li class="nav-item">
         <a href="../gallery.html" class="nav-link">
@@ -47,7 +75,8 @@
             </p>
         </a>
     </li>
-    <li class="nav-item {{ preg_match('/(jabatan|kategori|jenis)/i',request()->route()->getName())? 'menu-open': '' }}">
+    <li
+        class="nav-item {{ preg_match('/(jabatan|kategori|jenis)/i',request()->route()->getName())? 'menu-open': '' }}">
         <a href="#"
             class="nav-link {{ preg_match('/(jabatan|kategori|jenis)/i',request()->route()->getName())? 'active': '' }}">
             <i class="nav-icon fas fa-cogs"></i>

@@ -31,6 +31,7 @@
                             <button type="submit" class="btn btn-info">Tambah</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
                         </div>
+                    </div>
                 </form>
             </div>
             <!-- /.modal-content -->
@@ -80,7 +81,6 @@
             </div>
             <!-- /.card -->
         </div>
-    </div>
     </div>
 @endsection
 @push('css')

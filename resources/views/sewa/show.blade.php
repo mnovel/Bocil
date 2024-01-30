@@ -29,7 +29,8 @@
                                         <select class="form-control select2" name="asset" id="asset">
                                             <option value="" disabled selected>Silahkan pilih asset</option>
                                             @foreach ($data['sewa']->asset->assetDetail as $resAssetDetail)
-                                                <option value="{{ $resAssetDetail->id }}">ID-{{ $resAssetDetail->id }}
+                                                <option value="{{ $resAssetDetail->id }}">
+                                                    {{ $resAssetDetail->panjang . ' x ' . $resAssetDetail->lebar }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -71,6 +72,7 @@
                             <button type="submit" class="btn btn-info">Tambah</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
                         </div>
+                    </div>
                 </form>
             </div>
             <!-- /.modal-content -->
@@ -184,7 +186,7 @@
                                 <th>Panjang</th>
                                 <th>Lebar</th>
                                 <th>Luas</th>
-                                <th>Tarif (Per asset)</th>
+                                <th>Harga Total</th>
                                 <th>Jumlah Sewa</th>
                                 <th>Action</th>
                             </tr>
@@ -200,7 +202,7 @@
                                     <td>{{ $resSewaDetail->assetDetail->panjang }}</td>
                                     <td>{{ $resSewaDetail->assetDetail->lebar }}</td>
                                     <td>{{ $resSewaDetail->assetDetail->luas }}</td>
-                                    <td>{{ $resSewaDetail->assetDetail->tarif }}</td>
+                                    <td>{{ $resSewaDetail->harga }}</td>
                                     <td class="text-center">{{ $resSewaDetail->jumlah }}</td>
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm">
@@ -219,7 +221,6 @@
             </div>
             <!-- /.card -->
         </div>
-    </div>
     </div>
 @endsection
 @push('css')

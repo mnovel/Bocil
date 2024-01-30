@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('alamat');
             $table->date('tgl_sewa_mulai');
             $table->integer('lama_sewa');
-            $table->date('tgl_sewa_selesai')->storedAs('tgl_sewa_mulai + INTERVAL lama_sewa DAY');
+            $table->date('tgl_sewa_selesai')->storedAs('tgl_sewa_mulai + INTERVAL lama_sewa MONTH');
             $table->timestamps();
 
             $table->foreign('asset_id')

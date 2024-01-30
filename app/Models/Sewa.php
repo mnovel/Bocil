@@ -25,6 +25,11 @@ class Sewa extends Model
         return $this->hasMany(SewaDetail::class, 'kode_transaksi', 'kode_transaksi');
     }
 
+    public function skrd()
+    {
+        return $this->hasMany(Skrd::class, 'kode_transaksi', 'kode_transaksi');
+    }
+
     public static function boot()
     {
         parent::boot();
