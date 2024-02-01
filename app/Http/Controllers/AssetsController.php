@@ -87,6 +87,11 @@ class AssetsController extends Controller
      */
     public function update(UpdateAssetsRequest $request, Assets $assets)
     {
+        if (!$assets->isUsedInSkrd()) {
+            Alert::error('Gagal', 'Tidak dapat mengedit asset yang sedang digunakan di Skrd.');
+            return redirect()->back();
+        }
+
         try {
             $validated = $request->validated();
 

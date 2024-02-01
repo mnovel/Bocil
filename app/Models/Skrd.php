@@ -20,6 +20,11 @@ class Skrd extends Model
         return $this->belongsTo(Sewa::class, 'kode_transaksi', 'kode_transaksi');
     }
 
+    public function pembayaran()
+    {
+        return $this->hasOne(Pembayaran::class, 'skrd_id', 'id');
+    }
+
     public function penanggungJawab()
     {
         return $this->belongsTo(PenanggungJawab::class, 'penanggung_jawab_id', 'id');

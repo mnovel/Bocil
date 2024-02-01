@@ -15,6 +15,15 @@ class Sewa extends Model
         'kode_transaksi', 'asset_id', 'nama', 'nik', 'telepon', 'npwr', 'alamat', 'tgl_sewa_mulai', 'lama_sewa'
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->kode_transaksi = Str::uuid();
+        });
+    }
+
     public function asset()
     {
         return $this->belongsTo(Assets::class, 'asset_id', 'id');
@@ -27,15 +36,6 @@ class Sewa extends Model
 
     public function skrd()
     {
-        return $this->hasMany(Skrd::class, 'kode_transaksi', 'kode_transaksi');
-    }
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->kode_transaksi = Str::uuid();
-        });
+        return $this->hasOne(Skrd::class, 'kode_transaksi', 'kode_transaksi');
     }
 }

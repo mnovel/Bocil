@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Sewa;
-use App\Models\SewaDetail;
-use App\Http\Requests\StoreSewaRequest;
-use App\Http\Requests\UpdateSewaRequest;
 use App\Models\Jenis;
 use App\Models\Kategori;
+use App\Models\SewaDetail;
+use Illuminate\Support\Facades\Event;
+use App\Http\Requests\StoreSewaRequest;
+use Illuminate\Database\QueryException;
+use App\Http\Requests\UpdateSewaRequest;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class SewaController extends Controller
@@ -23,7 +25,7 @@ class SewaController extends Controller
         $title = 'Yakin ingin menghapus?';
         $text = "Aksi ini tidak dapat dikembalikan!";
         confirmDelete($title, $text);
-        return view("sewa/index", compact('data'));
+        return view("sewa.index", compact('data'));
     }
 
     /**
@@ -50,7 +52,7 @@ class SewaController extends Controller
             Alert::success('Sukses', 'Data penyewa berhasil disimpan');
             return redirect()->route('sewa.index');
         } catch (\Exception $e) {
-            Alert::error('Error', 'Gagal menyimpan sewa');
+            Alert::error('Gagal', 'Gagal menyimpan sewa');
             return redirect()->back();
         }
     }
@@ -64,7 +66,7 @@ class SewaController extends Controller
         $title = 'Yakin ingin menghapus?';
         $text = "Aksi ini tidak dapat dikembalikan!";
         confirmDelete($title, $text);
-        return view("sewa/show", compact('data'));
+        return view("sewa.show", compact('data'));
     }
 
     /**
@@ -73,7 +75,7 @@ class SewaController extends Controller
     public function edit(Sewa $sewa)
     {
         $data['sewa'] = $sewa;
-        return view("sewa/edit", compact('data'));
+        return view("sewa.edit", compact('data'));
     }
 
     /**
@@ -81,6 +83,10 @@ class SewaController extends Controller
      */
     public function update(UpdateSewaRequest $request, Sewa $sewa)
     {
+        if ($sewa->skrd) {
+            Alert::error('Gagal', 'Tidak dapat mengubah data sewa yang sudah digunakan di Skrd.');
+            return redirect()->back();
+        }
         try {
             $validated = $request->validated();
 
@@ -89,7 +95,7 @@ class SewaController extends Controller
             Alert::success('Sukses', 'Data penyewa berhasil diperbarui');
             return redirect()->route('sewa.index');
         } catch (\Exception $e) {
-            Alert::error('Error', 'Gagal memperbarui data penyewa');
+            Alert::error('Gagal', 'Gagal memperbarui data penyewa');
             return redirect()->back();
         }
     }
@@ -102,6 +108,9 @@ class SewaController extends Controller
         try {
             $sewa->delete();
             Alert::success('Berhasil', 'Data penyewa berhasil dihapus');
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000)
+                Alert::warning('Gagal', 'Tidak dapat menghapus transaksi, Transaksi ini sudah terbit skrd');
         } catch (Exception $e) {
             Alert::error('Gagal', 'Terjadi kesalahan saat menghapus data penyewa');
         }

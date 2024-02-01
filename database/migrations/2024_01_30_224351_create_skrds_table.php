@@ -18,13 +18,14 @@ return new class extends Migration
             $table->integer('denda')->nullable();
             $table->integer('pengurangan')->nullable();
             $table->string('terbilang');
-            $table->date('tanggal_cetak');
+            $table->date('tanggal_cetak')->nullable();
             $table->timestamps();
 
             $table->foreign('kode_transaksi')
                 ->references('kode_transaksi')
                 ->on('sewas')
-                ->onDelete('cascade');
+                ->onDelete('restrict')
+                ->onUpdate('restrict');
 
             $table->foreign('penanggung_jawab_id')
                 ->references('id')

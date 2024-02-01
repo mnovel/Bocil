@@ -25,4 +25,11 @@ class Assets extends Model
     {
         return $this->hasMany(AssetDetail::class, 'asset_id', 'id');
     }
+
+    public function isUsedInSkrd()
+    {
+        return $this->sewa->filter(function ($sewa) {
+            return $sewa->skrd && $sewa->skrd->pembayaran !== null;
+        })->isNotEmpty();
+    }
 }

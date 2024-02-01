@@ -72,6 +72,12 @@ class AssetDetailController extends Controller
      */
     public function update(UpdateAssetDetailRequest $request, AssetDetail $assetDetail)
     {
+        // dd($assetDetail->has('sewaDetail'));
+        if (!$assetDetail->isUsedInSkrd()) {
+            Alert::error('Gagal', 'Tidak dapat mengedit detail asset yang sedang digunakan di Skrd.');
+            return redirect()->back();
+        }
+
         try {
             $validated = $request->validated();
 

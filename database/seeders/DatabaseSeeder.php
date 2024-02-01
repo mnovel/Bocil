@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Petugas;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AssetsSeeder::class);
         $this->call(AssetDetailSeeder::class);
         $this->call(SewaSeeder::class);
+        $this->call(PetugasSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

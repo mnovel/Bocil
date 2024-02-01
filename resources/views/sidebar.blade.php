@@ -1,6 +1,6 @@
 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-    <li class="nav-item">
-        <a href="../gallery.html" class="nav-link">
+    <li class="nav-item {{ Route::is('dashboard') ? 'active' : '' }}">
+        <a href="{{ route('dashboard') }}" class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
             <i class="nav-icon fas fa-home"></i>
             <p>
                 Dashboard
@@ -12,6 +12,14 @@
             <i class="nav-icon fas fa-user-shield"></i>
             <p>
                 Penanggung Jawab
+            </p>
+        </a>
+    </li>
+    <li class="nav-item {{ Route::is('petugas.*') ? 'active' : '' }}">
+        <a href="{{ route('petugas.index') }}" class="nav-link {{ Route::is('petugas.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+                Petugas
             </p>
         </a>
     </li>
@@ -67,9 +75,9 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item">
-        <a href="../gallery.html" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
+    <li class="nav-item {{ Route::is('pembayaran.*') ? 'active' : '' }}">
+        <a href="{{ route('pembayaran.index') }}" class="nav-link {{ Route::is('pembayaran.*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-cash-register"></i>
             <p>
                 Pembayaran
             </p>

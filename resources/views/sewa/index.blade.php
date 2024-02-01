@@ -188,7 +188,7 @@
                                     <td>{{ $resSewa->nama }}</td>
                                     <td>{{ $resSewa->nik }}</td>
                                     <td>{{ $resSewa->asset->nama }}</td>
-                                    <td>Belum Terbit</td>
+                                    <td>{{ empty($resSewa->skrd->pembayaran) ? 'Belum Lunas' : 'Lunas' }}</td>
                                     <td>{{ $resSewa->tgl_sewa_mulai }}</td>
                                     <td>{{ $resSewa->tgl_sewa_selesai }}</td>
                                     <td class="text-center">

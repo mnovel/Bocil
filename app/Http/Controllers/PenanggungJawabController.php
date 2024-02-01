@@ -21,7 +21,7 @@ class PenanggungJawabController extends Controller
         $title = 'Yakin ingin menghapus?';
         $text = "Aksi ini tidak dapat dikembalikan!";
         confirmDelete($title, $text);
-        return view("penanggungJawab/index", compact('data'));
+        return view("penanggungJawab.index", compact('data'));
     }
 
     /**
@@ -71,7 +71,7 @@ class PenanggungJawabController extends Controller
     {
         $data['pj'] = $penanggungJawab;
         $data['jabatan'] = jabatan::orderBy('nama')->get();
-        return view("penanggungJawab/edit", compact('data'));
+        return view("penanggungJawab.edit", compact('data'));
     }
 
     /**

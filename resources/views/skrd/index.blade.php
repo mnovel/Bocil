@@ -1,4 +1,4 @@
-@section('title', 'Kategori')
+@section('title', 'SKRD')
 @extends('layout')
 @section('content')
     <div class="row">
@@ -17,9 +17,9 @@
                                 <th>Nama Asset</th>
                                 <th>Mulai Sewa</th>
                                 <th>Akhir Sewa</th>
-                                <th class="{{ request()->status == 'terbit' ? '' : 'd-none' }}">Denda</th>
-                                <th class="{{ request()->status == 'terbit' ? '' : 'd-none' }}">Pengurangan</th>
-                                <th class="{{ request()->status == 'terbit' ? '' : 'd-none' }}">Tanggal Terbit</th>
+                                <th class="{{ request()->status == 'belum-terbit' ? 'd-none' : '' }}">Denda</th>
+                                <th class="{{ request()->status == 'belum-terbit' ? 'd-none' : '' }}">Pengurangan</th>
+                                <th class="{{ request()->status == 'belum-terbit' ? 'd-none' : '' }}">Tanggal Terbit</th>
                                 <th class="{{ request()->status == 'selesai' ? 'd-none' : '' }}">Action</th>
                             </tr>
                         </thead>
@@ -34,6 +34,11 @@
                                         <td>{{ $resSkrd->tgl_sewa_selesai }}</td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
+                                                <button
+                                                    onclick="window.open('{{ route('sewa.detail', $resSkrd->kode_transaksi) }}')"
+                                                    type="button" class="btn btn-info btn-flat">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
                                                 <button
                                                     onclick="window.location.href='{{ route('skrd.store', ['penanggungJawab' => $data['penanggungJawab'], 'sewa' => $resSkrd->kode_transaksi]) }}'"
                                                     type="button" class="btn btn-success btn-flat">
@@ -52,29 +57,37 @@
                                         <td>{{ $resSkrd->sewa->asset->nama }}</td>
                                         <td>{{ $resSkrd->sewa->tgl_sewa_mulai }}</td>
                                         <td>{{ $resSkrd->sewa->tgl_sewa_selesai }}</td>
-                                        <td>{{ $resSkrd->denda }}</td>
+                                        <td>{{ 'Rp. ' . number_format($resSkrd->denda, 0, ',', '.') }}</td>
                                         <td>{{ $resSkrd->pengurangan }}</td>
                                         <td>{{ $resSkrd->tanggal_cetak }}</td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
-                                                <button type="button" class="btn btn-warning btn-flat" data-toggle="modal"
-                                                    data-target="#editSkrd-{{ $index + 1 }}">
-                                                    <i class="fas fa-edit"></i>
+                                                <button
+                                                    onclick="window.location.href='{{ route('skrd.update', ['skrd' => $resSkrd->id, 'status' => 'denda']) }}'"
+                                                    type="button" class="btn btn-danger btn-flat">
+                                                    <i class="fas fa-hand-holding-usd"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-primary btn-flat" data-toggle="modal"
+                                                    data-target="#pengurangan-{{ $index + 1 }}">
+                                                    <i class="fas fa-percentage"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-success btn-flat">
                                                     <i class="fas fa-print"></i>
                                                 </button>
+                                                <button type="button" class="btn btn-info btn-flat" data-toggle="modal"
+                                                    data-target="#lunas-{{ $index + 1 }}">
+                                                    <i class="far fa-handshake"></i>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
-                                    <div class="modal fade" id="editSkrd-{{ $index + 1 }}">
+                                    <div class="modal fade" id="lunas-{{ $index + 1 }}">
                                         <div class="modal-dialog modal-lg">
-                                            <form action="{{ route('skrd.update', $resSkrd->id) }}" method="POST">
-                                                @method('PUT')
+                                            <form action="{{ route('pembayaran.store', $resSkrd->id) }}" method="POST">
                                                 @csrf
                                                 <div class="modal-content">
                                                     <div class="modal-header bg-info">
-                                                        <h4 class="modal-title">Form Edit SKRD</h4>
+                                                        <h4 class="modal-title">Form Pelunasan</h4>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -82,14 +95,58 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <label for="" class="form-label">Denda</label>
-                                                            <input type="number" class="form-control" name="denda"
-                                                                id="denda" value="{{ old('denda') }}">
-                                                            @error('denda')
+                                                            <label for="" class="form-label">Tanggal
+                                                                Pembayaran</label>
+                                                            <input type="date" class="form-control"
+                                                                name="tanggal_pembayaran" id="tanggal_pembayaran"
+                                                                value="{{ old('tanggal_pembayaran') ?? date('Y-m-d', time()) }}">
+                                                            @error('tanggal_pembayaran')
                                                                 <small
                                                                     class="text-danger font-italic font-weight-bold">{{ $message }}</small>
                                                             @enderror
                                                         </div>
+                                                        <div class="form-group">
+                                                            <label for="" class="form-label">Petugas
+                                                                Penerima</label>
+                                                            <select class="form-control" name="petugas" id="petugas">
+                                                                @foreach ($data['petugas'] as $resPetugas)
+                                                                    <option value="{{ $resPetugas->id }}">
+                                                                        {{ $resPetugas->nama }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('petugas')
+                                                                <small
+                                                                    class="text-danger font-italic font-weight-bold">{{ $message }}</small>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                        <button type="submit" class="btn btn-info">Terim
+                                                            Pembayaran</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Batalkan</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <div class="modal fade" id="pengurangan-{{ $index + 1 }}">
+                                        <div class="modal-dialog modal-lg">
+                                            <form
+                                                action="{{ route('skrd.update', ['skrd' => $resSkrd->id, 'status' => 'pengurangan']) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-content">
+                                                    <div class="modal-header bg-info">
+                                                        <h4 class="modal-title">Form tambah pengurangan</h4>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
                                                         <div class="form-group">
                                                             <label for="" class="form-label">Pengurangan</label>
                                                             <input type="number" class="form-control" name="pengurangan"
@@ -121,6 +178,9 @@
                                         <td>{{ $resSkrd->sewa->asset->nama }}</td>
                                         <td>{{ $resSkrd->sewa->tgl_sewa_mulai }}</td>
                                         <td>{{ $resSkrd->sewa->tgl_sewa_selesai }}</td>
+                                        <td>{{ $resSkrd->denda }}</td>
+                                        <td>{{ $resSkrd->pengurangan }}</td>
+                                        <td>{{ $resSkrd->tanggal_cetak }}</td>
                                     </tr>
                                 @endforeach
                             @endif

@@ -8,6 +8,7 @@ use App\Models\SewaDetail;
 use App\Models\penanggungJawab;
 use App\Http\Requests\StoreSkrdRequest;
 use App\Http\Requests\UpdateSkrdRequest;
+use App\Models\Petugas;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class SkrdController extends Controller
@@ -23,16 +24,14 @@ class SkrdController extends Controller
                 $data['penanggungJawab'] = penanggungJawab::select('id')->first()->id;
                 break;
             case 'terbit':
-                $data['skrd'] = Skrd::all();
+                $data['petugas'] = Petugas::all();
+                $data['skrd'] = Skrd::doesntHave('pembayaran')->get();
                 break;
             case 'selesai':
-                $data['skrd'] = Skrd::all();
+                $data['skrd'] = Skrd::has('pembayaran')->get();
                 break;
         }
 
-        $title = 'Yakin ingin menghapus?';
-        $text = "Aksi ini tidak dapat dikembalikan!";
-        confirmDelete($title, $text);
         return view("skrd.index", compact('data'));
     }
 
@@ -56,7 +55,7 @@ class SkrdController extends Controller
             ], [
                 'penanggung_jawab_id' => $penanggungJawab->id,
                 'terbilang' => 'tes',
-                'tanggal_cetak' => date('Y-m-d', time())
+                'tanggal_cetak' => Date('Y-m-d', time())
             ]);
             Alert::success('Sukses', 'Berhasil menerbitkan SKRD');
             return redirect()->back();
@@ -85,16 +84,35 @@ class SkrdController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSkrdRequest $request, Skrd $skrd)
+    public function update(UpdateSkrdRequest $request, Skrd $skrd, $status)
     {
         try {
-            $validated = $request->validated();
-
-            $validated['tanggal_cetak'] = date('Y-m-d', time());
-
-            $skrd->update($validated);
-
-            Alert::success('Sukses', 'SKRD berhasil diperbarui');
+            switch ($status) {
+                case 'pengurangan':
+                    $validated = $request->validated();
+                    $skrd->update($validated);
+                    Alert::success('Sukses', 'Berhsail menambahkan pengurangan');
+                    break;
+                case 'denda':
+                    $batasPembayaran = (new \DateTime($skrd->sewa->tgl_sewa_mulai))->sub(new \DateInterval('P1D')); //27 1 2024
+                    $selisihBulan = $batasPembayaran->diff(new \DateTime(now()))->m;
+                    $persentaseDenda = 0.02;
+                    $harga = $skrd->sewa->sewaDetail->sum('harga');
+                    $denda = 0;
+                    if ($selisihBulan > 0) {
+                        $skrd->update([
+                            'tanggal_cetak' => now(),
+                            'denda' => $harga * $persentaseDenda * $selisihBulan
+                        ]);
+                        Alert::success('Sukses', 'Berhsail menambahkan denda');
+                    } else {
+                        $skrd->update([
+                            'denda' => null
+                        ]);
+                        Alert::warning('Gagal', 'Belum masuk hitungan denda');
+                    }
+                    break;
+            }
             return redirect()->route('skrd.index', 'terbit');
         } catch (\Exception $e) {
             Alert::error('Error', 'Gagal memperbarui SKRD');

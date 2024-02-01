@@ -86,7 +86,7 @@
                         <tr>
                             <th class="col-1">Tarif</th>
                             <td>:</td>
-                            <td>{{ $data['asset']->jenis->tarif }}</td>
+                            <td>{{ 'Rp. ' . number_format($data['asset']->jenis->tarif, 0, ',', '.') }}</td>
                         </tr>
                     </table>
                 </div>
@@ -121,7 +121,7 @@
                                     <td>{{ $resAssetDetail->panjang }}</td>
                                     <td>{{ $resAssetDetail->lebar }}</td>
                                     <td>{{ $resAssetDetail->luas }}</td>
-                                    <td>{{ $resAssetDetail->tarif }} / item</td>
+                                    <td>{{ 'Rp. ' . number_format($resAssetDetail->tarif, 0, ',', '.') }} / item</td>
                                     <td>{{ $resAssetDetail->jumlah_asset }}</td>
                                     <td>{{ $resAssetDetail->jumlah_tersedia }}</td>
                                     <td>

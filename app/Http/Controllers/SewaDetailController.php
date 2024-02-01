@@ -36,6 +36,10 @@ class SewaDetailController extends Controller
         try {
             $validated = $request->validated();
 
+            if (Sewa::find($validated['kode_transaksi'])->skrd) {
+                Alert::error('Gagal', 'Tidak dapat menambah asset sewa yang sudah digunakan di Skrd.');
+                return redirect()->back();
+            }
 
             $validated['asset_detail_id'] = $validated['asset'];
             $validated['tarif'] = AssetDetail::with(['asset', 'asset.jenis'])->where('id', $validated['asset'])->first()->asset->jenis->tarif;
@@ -47,7 +51,6 @@ class SewaDetailController extends Controller
             Alert::success('Sukses', 'Asset berhasil disimpan');
             return redirect()->route('sewa.detail', $validated['kode_transaksi']);
         } catch (\Exception $e) {
-            dd($e);
             Alert::error('Error', 'Gagal menyimpan asset');
             return redirect()->back();
         }
@@ -82,6 +85,11 @@ class SewaDetailController extends Controller
      */
     public function destroy(SewaDetail $sewaDetail)
     {
+        if ($sewaDetail->sewa->skrd) {
+            Alert::error('Gagal', 'Tidak dapat menghapus asset sewa yang sudah digunakan di Skrd.');
+            return redirect()->back();
+        }
+
         try {
             $sewaDetail->delete();
             Alert::success('Berhasil', 'Asset sewa berhasil dihapus');

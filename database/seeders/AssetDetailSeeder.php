@@ -18,14 +18,14 @@ class AssetDetailSeeder extends Seeder
                 'asset_id' => 1,
                 'panjang' => 20.00,
                 'lebar' => 13.00,
-                'tarif' => 390000,
+                'tarif' => 1196000,
                 'jumlah_asset' => 3
             ],
             [
                 'asset_id' => 1,
                 'panjang' => 40.00,
                 'lebar' => 30.00,
-                'tarif' => 1800000,
+                'tarif' => 5520000,
                 'jumlah_asset' => 3
             ]
         ];

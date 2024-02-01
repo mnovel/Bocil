@@ -202,7 +202,7 @@
                                     <td>{{ $resSewaDetail->assetDetail->panjang }}</td>
                                     <td>{{ $resSewaDetail->assetDetail->lebar }}</td>
                                     <td>{{ $resSewaDetail->assetDetail->luas }}</td>
-                                    <td>{{ $resSewaDetail->harga }}</td>
+                                    <td>{{ 'Rp. ' . number_format($resSewaDetail->harga, 0, ',', '.') }}</td>
                                     <td class="text-center">{{ $resSewaDetail->jumlah }}</td>
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm">

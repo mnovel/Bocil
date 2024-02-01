@@ -22,8 +22,7 @@ class UpdateSkrdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'denda' => 'required|numeric',
-            'pengurangan' => 'required|numeric'
+            'pengurangan' => 'nullable|numeric'
         ];
     }
 
@@ -35,9 +34,6 @@ class UpdateSkrdRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'denda.numeric' => 'Denda harus berupa angka.',
-            'denda.required' => 'Kolom Denda harus diisi.',
-            'pengurangan.numeric' => 'Pengurangan harus berupa angka.',
             'pengurangan.required' => 'Kolom Pengurangan harus diisi.',
         ];
     }
